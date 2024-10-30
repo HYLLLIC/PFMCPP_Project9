@@ -44,10 +44,10 @@ private:
     float x{0}, y{0};
 };
 
-template<typename Type>
+template<typename ... Type>
 struct Wrapper
 {
-    Wrapper(Type&& t) : val(std::move(t)) 
+    Wrapper(Type&& ... t) : val(std::move(t) ...) 
     { 
         std::cout << "Wrapper(" << typeid(val).name() << ")" << std::endl; 
     }
