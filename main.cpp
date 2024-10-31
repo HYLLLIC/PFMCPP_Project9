@@ -51,7 +51,18 @@ struct Wrapper
     { 
         std::cout << "Wrapper(" << typeid(val).name() << ")" << std::endl; 
     }
+
+    void print() const;
+
+private:
+    Type val;
 };
+
+template<>
+void Wrapper<Point>::print() const
+{
+    
+}
 
 /*
  MAKE SURE YOU ARE NOT ON THE MASTER BRANCH
