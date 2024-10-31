@@ -41,6 +41,7 @@ struct Point
         str += " }";
         return str;
     }
+
 private:
     float x{0}, y{0};
 };
@@ -80,7 +81,7 @@ void variadicHelper(Type first, Args ...everything)
 {
     Wrapper<Type> wrap(std::forward<Type>(first));
     wrap.print();
-    variadicHelper(std::forward<Args>(everything)...);    //recursive call
+    variadicHelper(std::forward<Args>(everything)...);
 }
 
 //single-template-parameter version of variadicHelper
