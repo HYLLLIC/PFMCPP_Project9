@@ -20,6 +20,7 @@ Make the following program work, which makes use of Variadic templates and Recur
 #include <iostream>
 #include <string>
 #include <typeinfo>
+#include <utility>
 
 struct Point
 {
@@ -52,16 +53,42 @@ struct Wrapper
         std::cout << "Wrapper(" << typeid(val).name() << ")" << std::endl; 
     }
 
+    //print() function added to Wrapper stub
     void print() const;
 
 private:
     Type val;
 };
 
+//wrapper print() function definition
+template<typename Type>
+void Wrapper<Type> :: print() const
+{
+    std::cout << "Wrapper::print(" << val << ")" << std::endl;
+}
+
+//wrapper class point speciailization
 template<>
 void Wrapper<Point>::print() const
 {
-    
+    std::cout << "Wrapper::print(" << val.toString() << ")" << std::endl;
+}
+
+//variadic-template version of VariadicHelper
+template<typename Type, typename ...Args>
+void variadicHelper(Type first, Args ...everything)
+{
+    Wrapper<Type> wrap(std::forward<Type>(first));
+    wrap.print();
+    variadicHelper(std::forward<Args>(everything)...);    //recursive call
+}
+
+//single-template-parameter version of variadicHelper
+template<typename Type>
+void variadicHelper(Type first)
+{
+    Wrapper<Type> wrap(std::forward<Type>(first));
+    wrap.print();
 }
 
 /*
