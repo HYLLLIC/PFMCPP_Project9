@@ -71,10 +71,10 @@ void Wrapper<Type> :: print() const
 template<>
 void Wrapper<Point>::print() const
 {
-    std::cout << "Wrapper::print(" << val.toString() << ")" << std::endl;
+    std::cout << val.toString() << std::endl;
 }
 
-//variadic-template version of VariadicHelper
+//variadic-template version of variadicHelper
 template<typename Type, typename ...Args>
 void variadicHelper(Type first, Args ...everything)
 {
