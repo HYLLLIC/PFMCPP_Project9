@@ -75,21 +75,22 @@ void Wrapper<Point>::print() const
     std::cout << val.toString() << std::endl;
 }
 
-//variadic-template version of variadicHelper
-template<typename Type, typename ...Args>
-void variadicHelper(Type first, Args ...everything)
+//forward declaration of variadicHelper
+void variadicHelper();
+
+//variadicHelper function definition
+template<typename T, typename ...Args>
+void variadicHelper(T first, Args ... everythingElse)
 {
-    Wrapper<Type> wrap(std::forward<Type>(first));
-    wrap.print();
-    variadicHelper(std::forward<Args>(everything)...);
+    Wrapper<T> w(std::forward<T>(first));
+    w.print();
+    variadicHelper(std::forward<Args>(everythingElse) ...);
 }
 
-//single-template-parameter version of variadicHelper
-template<typename Type>
-void variadicHelper(Type first)
+//variadicHelper function specialization for empty parameter list
+void variadicHelper()
 {
-    Wrapper<Type> wrap(std::forward<Type>(first));
-    wrap.print();
+    std::cout << "nothing left" << std::endl;
 }
 
 /*
