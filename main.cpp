@@ -20,6 +20,7 @@ Make the following program work, which makes use of Variadic templates and Recur
 #include <iostream>
 #include <string>
 #include <typeinfo>
+#include <utility>
 
 struct Point
 {
@@ -40,6 +41,7 @@ struct Point
         str += " }";
         return str;
     }
+
 private:
     float x{0}, y{0};
 };
@@ -47,11 +49,49 @@ private:
 template<typename Type>
 struct Wrapper
 {
-    Wrapper(Type&& t) : val(std::move(t)) 
+    Wrapper(Type&& t) : val(std::move(t) ) 
     { 
         std::cout << "Wrapper(" << typeid(val).name() << ")" << std::endl; 
     }
+
+    //print() function added to Wrapper stub
+    void print() const;
+
+private:
+    Type val;
 };
+
+//wrapper print() function definition
+template<typename Type>
+void Wrapper<Type> :: print() const
+{
+    std::cout << "Wrapper::print(" << val << ")" << std::endl;
+}
+
+//wrapper class point speciailization
+template<>
+void Wrapper<Point>::print() const
+{
+    std::cout << val.toString() << std::endl;
+}
+
+//forward declaration of variadicHelper
+void variadicHelper();
+
+//variadicHelper function definition
+template<typename T, typename ...Args>
+void variadicHelper(T first, Args ... everythingElse)
+{
+    Wrapper<T> w(std::forward<T>(first));
+    w.print();
+    variadicHelper(std::forward<Args>(everythingElse) ...);
+}
+
+//variadicHelper function specialization for empty parameter list
+void variadicHelper()
+{
+    std::cout << "nothing left" << std::endl;
+}
 
 /*
  MAKE SURE YOU ARE NOT ON THE MASTER BRANCH
